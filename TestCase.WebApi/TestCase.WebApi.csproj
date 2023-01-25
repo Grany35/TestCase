@@ -16,4 +16,7 @@
   <ItemGroup>
     <Folder Include="Controllers\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TestCase.Core\TestCase.Core.csproj" />
+  </ItemGroup>
 </Project>
