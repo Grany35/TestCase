@@ -3,6 +3,7 @@ using Autofac.Extensions.DependencyInjection;
 using TestCase.Business.Abstract;
 using TestCase.Business.Concrete;
 using TestCase.Business.DependencyResolvers.Autofac;
+using TestCase.Core.Extensions;
 using TestCase.Core.Settings;
 using TestCase.DataAccess.Abstract;
 using TestCase.DataAccess.Concrete;
@@ -20,14 +21,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//MongoSettings
 var dbs = builder.Configuration.GetSection("MongoConnection").Get<MongoSettings>();
 builder.Services.AddSingleton<IMongoSettings, MongoSettings>(sp => { return dbs; });
-
-// builder.Services.Configure<MongoSettings>(options =>
-// {
-//     options.ConnectionString = builder.Configuration.GetSection("MongoConnection:ConnectionString").Value;
-//     options.Database = builder.Configuration.GetSection("MongoConnection:Database").Value;
-// });
 
 var app = builder.Build();
 
@@ -37,6 +33,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseAuthorization();
 
