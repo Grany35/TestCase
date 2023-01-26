@@ -1,12 +1,14 @@
 using TestCase.Business.Abstract;
+using TestCase.Core.Utilities.Params;
 using TestCase.DataAccess.Abstract;
 using TestCase.Entities.Concrete;
+using TestCase.Entities.Dtos;
 
 namespace TestCase.Business.Concrete;
 
-public class AwardManager:IAwardService
+public class AwardManager : IAwardService
 {
-    private readonly  IAwardDal _awardDal;
+    private readonly IAwardDal _awardDal;
 
     public AwardManager(IAwardDal awardDal)
     {
@@ -49,7 +51,7 @@ public class AwardManager:IAwardService
         }
 
         var first1000Users = leaderboards.Take(1000);
-        var consolationPrize = 12500 / first1000Users.Count();
+        double consolationPrize = 12500.0 / first1000Users.Count();
         foreach (var user in first1000Users)
         {
             awards.Add(new AwardEntity
@@ -58,6 +60,18 @@ public class AwardManager:IAwardService
                 Award = $"Consolation Prize - {consolationPrize}$",
             });
         }
+
         await _awardDal.AddManyAsync(awards);
+    }
+
+    public IQueryable<AwardEntity> GetAwards(AwardParams awardParams)
+    {
+        IQueryable<AwardEntity> awards = _awardDal.Get();
+
+        if (awardParams.UserId != null)
+        {
+            awards = awards.Where(x => x.User_Id == awardParams.UserId);
+        }
+        return awards;
     }
 }

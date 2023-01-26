@@ -26,8 +26,8 @@ public class LeaderBoardController : ControllerBase
     [HttpGet("[action]")]
     public IActionResult GetLeaderBoard([FromQuery] LeaderBoardParams lbParams)
     {
-        var leaderBoard = _leaderBoardService.GetLeaderBoard(lbParams);
+        var result = _leaderBoardService.GetLeaderBoard(lbParams);
 
-        return Ok(leaderBoard);
+        return Ok(result);
     }
 }
