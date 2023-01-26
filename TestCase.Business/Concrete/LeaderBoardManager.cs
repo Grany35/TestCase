@@ -1,5 +1,6 @@
 using MongoDB.Driver;
 using TestCase.Business.Abstract;
+using TestCase.Core.Utilities.Params;
 using TestCase.DataAccess.Abstract;
 using TestCase.Entities.Concrete;
 using TestCase.Entities.Dtos;
@@ -47,6 +48,39 @@ public class LeaderBoardManager : ILeaderBoardService
         await _awardService.DistributeAwards(leaderBoards);
 
         await _leaderBoardDal.AddManyAsync(leaderBoards);
+    }
+
+    public IQueryable<Leaderboard> GetLeaderBoard(LeaderBoardParams lbParams)
+    {
+        IQueryable<Leaderboard> leaderBoard = _leaderBoardDal.Get()
+            .OrderBy(x => x.Rank);
+
+        leaderBoard = FilterByMonth(leaderBoard, lbParams);
+        leaderBoard = FilterByUserId(leaderBoard, lbParams);
+
+        return leaderBoard;
+    }
+
+    private static IQueryable<Leaderboard> FilterByUserId(IQueryable<Leaderboard> leaderBoard,
+        LeaderBoardParams lbParams)
+    {
+        if (lbParams.UserId != null)
+        {
+            leaderBoard = leaderBoard.Where(x => x.User_Id == lbParams.UserId);
+        }
+
+        return leaderBoard;
+    }
+
+    private static IQueryable<Leaderboard> FilterByMonth(IQueryable<Leaderboard> leaderBoard,
+        LeaderBoardParams lbParams)
+    {
+        if (lbParams.Month != null)
+        {
+            leaderBoard = leaderBoard.AsEnumerable().Where(x => x.Date.Month == lbParams.Month).AsQueryable();
+        }
+
+        return leaderBoard;
     }
 
 

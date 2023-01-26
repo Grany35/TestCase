@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using TestCase.Business.Abstract;
+using TestCase.Core.Utilities.Params;
 
 namespace TestCase.WebApi.Controllers;
 
@@ -14,11 +15,19 @@ public class LeaderBoardController : ControllerBase
         _leaderBoardService = leaderBoardService;
     }
 
-    [HttpGet("[action]")]
+    [HttpPost("[action]")]
     public async Task<IActionResult> AddLeaderBoard()
     {
         await _leaderBoardService.AddToLeaderBoard();
 
         return NoContent();
+    }
+
+    [HttpGet("[action]")]
+    public IActionResult GetLeaderBoard([FromQuery] LeaderBoardParams lbParams)
+    {
+        var leaderBoard = _leaderBoardService.GetLeaderBoard(lbParams);
+
+        return Ok(leaderBoard);
     }
 }
