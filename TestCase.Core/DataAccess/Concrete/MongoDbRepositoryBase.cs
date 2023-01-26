@@ -10,10 +10,10 @@ public class MongoDbRepositoryBase<T> : IRepository<T> where T : class, new()
 {
     protected readonly IMongoCollection<T> _collection;
 
-    protected MongoDbRepositoryBase(IOptions<MongoSettings> settings)
+    protected MongoDbRepositoryBase(IMongoSettings settings)
     {
-        var client = new MongoClient(settings.Value.ConnectionString);
-        var db = client.GetDatabase(settings.Value.Database);
+        var client = new MongoClient(settings.ConnectionString);
+        var db = client.GetDatabase(settings.Database);
         _collection = db.GetCollection<T>(typeof(T).Name.ToLowerInvariant());
     }
 
@@ -34,6 +34,12 @@ public class MongoDbRepositoryBase<T> : IRepository<T> where T : class, new()
         var options = new InsertOneOptions { BypassDocumentValidation = false };
         await _collection.InsertOneAsync(entity, options);
         return entity;
+    }
+
+    public async Task AddManyAsync(IEnumerable<T> entities)
+    {
+        var options = new InsertManyOptions{BypassDocumentValidation = false};
+        await _collection.InsertManyAsync(entities, options);
     }
 
     public async Task<T> UpdateAsync(T entity, Expression<Func<T, bool>> predicate)

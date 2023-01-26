@@ -7,17 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Abstract" />
-    <Folder Include="Concrete" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.2-mauipre.1.22102.15" />
     <PackageReference Include="MongoDB.Driver" Version="2.18.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\TestCase.Core\TestCase.Core.csproj" />
+    <ProjectReference Include="..\TestCase.Entities\TestCase.Entities.csproj" />
   </ItemGroup>
 
 </Project>
