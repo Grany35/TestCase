@@ -13,7 +13,10 @@ public class AutofacBusinessModule : Module
     {
         builder.RegisterType<LeaderBoardManager>().As<ILeaderBoardService>();
         builder.RegisterType<LeaderBoardDal>().As<ILeaderBoardDal>();
-        
+
+        builder.RegisterType<AwardManager>().As<IAwardService>();
+        builder.RegisterType<AwardDal>().As<IAwardDal>();
+
         builder.RegisterType<PointManager>().As<IPointService>();
     }
 }

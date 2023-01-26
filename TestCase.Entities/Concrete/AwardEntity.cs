@@ -3,7 +3,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace TestCase.Entities.Concrete;
 
-public class Award
+public class AwardEntity
 {
     [BsonId]
     [BsonRepresentation((BsonType.ObjectId))]
@@ -11,7 +11,7 @@ public class Award
     
     [BsonRepresentation((BsonType.ObjectId))]
     public string User_Id { get; set; }
+
+    public string Award { get; set; }
     
-    [BsonRepresentation(BsonType.DateTime)]
-    public DateTime Date { get; set; }  
 }

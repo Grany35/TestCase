@@ -29,6 +29,13 @@ public class MongoDbRepositoryBase<T> : IRepository<T> where T : class, new()
         return _collection.Find(predicate).FirstOrDefaultAsync();
     }
 
+    public Task<List<T>> GetListAsync(Expression<Func<T, bool>> predicate = null)
+    {
+        return predicate == null
+            ? _collection.Find(FilterDefinition<T>.Empty).ToListAsync()
+            : _collection.Find(predicate).ToListAsync();
+    }
+
     public async Task<T> AddAsync(T entity)
     {
         var options = new InsertOneOptions { BypassDocumentValidation = false };
@@ -38,7 +45,7 @@ public class MongoDbRepositoryBase<T> : IRepository<T> where T : class, new()
 
     public async Task AddManyAsync(IEnumerable<T> entities)
     {
-        var options = new InsertManyOptions{BypassDocumentValidation = false};
+        var options = new InsertManyOptions { BypassDocumentValidation = false };
         await _collection.InsertManyAsync(entities, options);
     }
 
