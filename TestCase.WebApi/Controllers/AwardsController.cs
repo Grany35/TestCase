@@ -15,7 +15,7 @@ public class AwardsController : ControllerBase
         _awardService = awardService;
     }
 
-    [HttpGet("[action]")]
+    [HttpGet]
     public IActionResult GetAwards([FromQuery] AwardParams awardParams)
     {
         var result = _awardService.GetAwards(awardParams);

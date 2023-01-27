@@ -15,7 +15,7 @@ public class LeaderBoardController : ControllerBase
         _leaderBoardService = leaderBoardService;
     }
 
-    [HttpPost("[action]")]
+    [HttpPost]
     public async Task<IActionResult> AddLeaderBoard()
     {
         await _leaderBoardService.AddToLeaderBoard();
@@ -23,7 +23,7 @@ public class LeaderBoardController : ControllerBase
         return NoContent();
     }
 
-    [HttpGet("[action]")]
+    [HttpGet]
     public IActionResult GetLeaderBoard([FromQuery] LeaderBoardParams lbParams)
     {
         var result = _leaderBoardService.GetLeaderBoard(lbParams);
